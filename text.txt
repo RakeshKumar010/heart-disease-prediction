@@ -1,0 +1,10 @@
+**Libary used in that project**
+pip install pandas
+pip install numpy
+pip install seaborn
+pip install flask
+pip install joblib
+pip install scikit-learn
+pip install matplotlib
+
+
