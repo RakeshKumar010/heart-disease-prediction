@@ -38,7 +38,7 @@
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25); 
         }
         
-        /* Header and Text - NEW SHADING */
+        /* Header and Text */
         h1 { 
             text-align: center; 
             color: var(--color-primary); 
@@ -48,7 +48,6 @@
             text-transform: uppercase;
             letter-spacing: 2px; 
             padding-bottom: 15px;
-            /* Stronger, proper text shadow for depth */
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); 
         }
         p {
@@ -68,16 +67,12 @@
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); 
             transition: box-shadow 0.3s;
         }
-        /* Spacing for form after prediction result */
         .container form > .input-group:first-child {
             margin-top: 30px;
         }
-
-        /* Hover Effect */
         .input-group:hover {
             box-shadow: 0 6px 20px rgba(93, 63, 211, 0.2); 
         }
-
         .input-group label { 
             display: block; 
             margin-bottom: 5px; 
@@ -85,7 +80,6 @@
             color: var(--color-text-dark);
             font-size: 0.95em;
         }
-        /* Input and Select Fields */
         .input-group input, .input-group select { 
             width: 100%; 
             padding: 10px; 
@@ -96,14 +90,13 @@
             background-color: var(--color-text-light); 
             transition: border-color 0.3s, box-shadow 0.3s;
         }
-        /* Focus State */
         .input-group input:focus, .input-group select:focus {
             border-color: var(--color-primary); 
             outline: none;
             box-shadow: 0 0 10px rgba(93, 63, 211, 0.5); 
         }
 
-        /* Submit Button - Gradient and Shading */
+        /* Submit Button */
         .submit-btn { 
             width: 100%; 
             padding: 14px; 
@@ -126,28 +119,90 @@
             box-shadow: 0 6px 20px rgba(93, 63, 211, 0.6); 
         }
         
-        /* Result Display */
+        /* ── Result Card ── */
         .result { 
             margin-top: 40px; 
             margin-bottom: 25px; 
-            padding: 20px; 
+            padding: 22px 20px; 
             border-radius: 10px; 
-            font-size: 1.15em; 
             text-align: center; 
-            font-weight: bold;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
+
+        /* Step 3: HIGH = red theme, LOW = green theme */
         .result.negative { 
             background-color: #e8f5e9; 
-            color: #4CAF50; 
             border: 1px solid #c8e6c9; 
         }
         .result.positive { 
-            background-color: #fff8e1; 
-            color: #FF9800; 
-            border: 2px solid var(--color-primary); 
+            background-color: #fff5f5;
+            border: 2px solid #e53935;
         }
-        
+
+        /* Step 1: Result heading (HIGH / LOW verdict) */
+        .result-verdict {
+            font-size: 1.3em;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .result.positive .result-verdict {
+            color: #e53935;         /* Red for HIGH */
+        }
+        .result.negative .result-verdict {
+            color: #2e7d32;         /* Green for LOW */
+        }
+
+        /* Step 2: Risk percentage badge */
+        .risk-score {
+            display: inline-block;
+            font-size: 2em;
+            font-weight: 900;
+            border-radius: 50px;
+            padding: 6px 22px;
+            margin: 8px 0 12px;
+            letter-spacing: 1px;
+        }
+        .result.positive .risk-score {
+            background-color: #ffebee;
+            color: #c62828;         /* Deep red for HIGH risk score */
+            border: 2px solid #ef9a9a;
+        }
+        .result.negative .risk-score {
+            background-color: #f1f8e9;
+            color: #33691e;         /* Deep green for LOW risk score */
+            border: 2px solid #aed581;
+        }
+
+        /* Supporting message below the score */
+        .result-message {
+            font-size: 0.9em;
+            font-weight: 500;
+            color: #555;
+            margin-top: 4px;
+        }
+
+        /* Progress bar showing risk visually */
+        .risk-bar-track {
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            height: 10px;
+            margin: 12px 4px 4px;
+            overflow: hidden;
+        }
+        .risk-bar-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.6s ease;
+        }
+        .result.positive .risk-bar-fill {
+            background: linear-gradient(90deg, #ef9a9a, #e53935);
+        }
+        .result.negative .risk-bar-fill {
+            background: linear-gradient(90deg, #a5d6a7, #2e7d32);
+        }
+
         .disclaimer {
             display: block; 
             text-align: center; 
@@ -164,8 +219,25 @@
         
         {% if prediction_text %}
             {% set result_class = 'positive' if 'HIGH' in prediction_text else 'negative' %}
+            {% set verdict_label = 'HIGH RISK' if 'HIGH' in prediction_text else 'LOW RISK' %}
+
             <div class="result {{ result_class }}">
-                {{ prediction_text }}
+
+                <!-- Step 1: HIGH / LOW heading -->
+                <div class="result-verdict">{{ verdict_label }}</div>
+
+                <!-- Step 2: Risk percentage badge -->
+                {% if probability is not none %}
+                    <div class="risk-score">{{ probability }}%</div>
+
+                    <!-- Visual progress bar -->
+                    <div class="risk-bar-track">
+                        <div class="risk-bar-fill"  ></div>
+                    </div>
+                {% endif %}
+
+                <!-- Supporting message from model -->
+                <div class="result-message">{{ prediction_text }}</div>
             </div>
         {% endif %}
 
