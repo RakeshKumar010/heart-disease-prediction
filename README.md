@@ -1,4 +1,4 @@
-# 💜 Heart Disease Prediction System
+# 🛠️ Heart Disease Prediction System
 
 A machine learning web application that predicts the likelihood of heart disease based on 13 clinical markers, built with Flask, Scikit-learn, and a clean violet-themed UI.
 
