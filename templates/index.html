@@ -1,341 +1,437 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Heart Disease Predictor 💜</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Heart Disease Prediction System</title>
+
     <style>
-        /* Define Premium Violet Color Palette */
         :root {
-            --color-primary: #5D3FD3; /* Deep Royal Violet */
-            --color-light: #f5f5ff;  
-            --color-background: #B39DDB; /* Deeper Lavender Background */
-            --color-text-dark: #333333;
+
+            /* Main Theme */
+            --color-primary: #2563eb;
+            --color-primary-dark: #1e40af;
+            --color-secondary: #0f172a;
+
+            /* Backgrounds */
+            --color-background: #f1f5f9;
+            --color-container: #ffffff;
+            --color-card: #f8fafc;
+
+            /* Text */
+            --color-text-dark: #1e293b;
             --color-text-light: #ffffff;
-            --color-accent: #FFD700; 
-            --color-gradient-start: #ffffff; 
-            --color-gradient-end: #F0F4FF; 
-            --color-container-blend: #EBE5F7; 
-            --color-btn-start: #7A57E8; 
-            --color-btn-end: #5D3FD3;
+            --color-text-muted: #64748b;
+
+            /* Borders */
+            --color-border: #dbeafe;
+            --color-input-border: #cbd5e1;
+
+            /* Success / Danger */
+            --color-success: #16a34a;
+            --color-success-light: #dcfce7;
+
+            --color-danger: #dc2626;
+            --color-danger-light: #fee2e2;
+
+            /* Button */
+            --color-btn-start: #2563eb;
+            --color-btn-end: #1d4ed8;
+
+            /* Shadows */
+            --shadow-main: 0 10px 30px rgba(15, 23, 42, 0.08);
+            --shadow-hover: 0 12px 25px rgba(37, 99, 235, 0.15);
         }
-        
-        /* General Setup */
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: var(--color-background); 
-            padding: 40px; 
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #eef2ff, #f8fafc);
+            padding: 40px 20px;
             color: var(--color-text-dark);
         }
-        
-        /* Main Container */
-        .container { 
-            max-width: 550px; 
-            margin: auto; 
-            background: radial-gradient(circle at center, var(--color-text-light) 0%, var(--color-container-blend) 100%);
-            padding: 35px; 
-            border-radius: 15px; 
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25); 
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: var(--color-container);
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: var(--shadow-main);
+            border: 1px solid #e2e8f0;
         }
-        
-        /* Header and Text */
-        h1 { 
-            text-align: center; 
-            color: var(--color-primary); 
-            margin-bottom: 25px; 
-            font-weight: 900; 
-            font-size: 1.8em; 
-            text-transform: uppercase;
-            letter-spacing: 2px; 
-            padding-bottom: 15px;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); 
-        }
-        p {
-            margin-bottom: 30px; 
-            color: #666;
+
+        h1 {
             text-align: center;
-            font-size: 0.95em;
-        }
-
-        /* Input Group Styling */
-        .input-group { 
-            margin-bottom: 18px; 
-            border: 2px solid #a0a0a0; 
-            padding: 15px; 
-            border-radius: 8px;
-            background: linear-gradient(145deg, var(--color-gradient-start), var(--color-gradient-end));
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); 
-            transition: box-shadow 0.3s;
-        }
-        .container form > .input-group:first-child {
-            margin-top: 30px;
-        }
-        .input-group:hover {
-            box-shadow: 0 6px 20px rgba(93, 63, 211, 0.2); 
-        }
-        .input-group label { 
-            display: block; 
-            margin-bottom: 5px; 
-            font-weight: 600; 
-            color: var(--color-text-dark);
-            font-size: 0.95em;
-        }
-        .input-group input, .input-group select { 
-            width: 100%; 
-            padding: 10px; 
-            border: 2px solid #ccc; 
-            border-radius: 6px; 
-            box-sizing: border-box; 
-            font-size: 0.95em;
-            background-color: var(--color-text-light); 
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-        .input-group input:focus, .input-group select:focus {
-            border-color: var(--color-primary); 
-            outline: none;
-            box-shadow: 0 0 10px rgba(93, 63, 211, 0.5); 
-        }
-
-        /* Submit Button */
-        .submit-btn { 
-            width: 100%; 
-            padding: 14px; 
-            background: linear-gradient(180deg, var(--color-btn-start) 0%, var(--color-btn-end) 100%);
-            color: var(--color-text-light); 
-            border: none; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-size: 1.05em; 
-            font-weight: 700;
-            margin-top: 25px; 
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            box-shadow: 0 4px 15px rgba(93, 63, 211, 0.4); 
-            transition: background-color 0.3s, transform 0.1s, box-shadow 0.3s;
-        }
-        .submit-btn:hover { 
-            background: linear-gradient(180deg, #6c4ed1 0%, #4c33b8 100%); 
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(93, 63, 211, 0.6); 
-        }
-        
-        /* ── Result Card ── */
-        .result { 
-            margin-top: 40px; 
-            margin-bottom: 25px; 
-            padding: 22px 20px; 
-            border-radius: 10px; 
-            text-align: center; 
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Step 3: HIGH = red theme, LOW = green theme */
-        .result.negative { 
-            background-color: #e8f5e9; 
-            border: 1px solid #c8e6c9; 
-        }
-        .result.positive { 
-            background-color: #fff5f5;
-            border: 2px solid #e53935;
-        }
-
-        /* Step 1: Result heading (HIGH / LOW verdict) */
-        .result-verdict {
-            font-size: 1.3em;
+            color: var(--color-secondary);
+            margin-bottom: 12px;
+            font-size: 2rem;
             font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--color-text-muted);
+            margin-bottom: 35px;
+            font-size: 1rem;
+        }
+
+        /* =========================
+           FORM GRID
+        ========================= */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 22px;
+        }
+
+        .input-group {
+            border: 1px solid #e2e8f0;
+            padding: 16px;
+            border-radius: 14px;
+            background: var(--color-card);
+            transition: all 0.3s ease;
+        }
+
+        .input-group:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-text-dark);
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--color-input-border);
+            border-radius: 10px;
+            background: white;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+            outline: none;
+        }
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg,
+                    var(--color-btn-start),
+                    var(--color-btn-end));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.25);
+        }
+
+        /* =========================
+           RESULT CARD
+        ========================= */
+
+        .result {
+            margin-bottom: 30px;
+            padding: 24px;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .result.positive {
+            background: var(--color-danger-light);
+            border: 1px solid #fecaca;
+        }
+
+        .result.negative {
+            background: var(--color-success-light);
+            border: 1px solid #bbf7d0;
+        }
+
+        .result-verdict {
+            font-size: 1.5rem;
+            font-weight: 800;
             margin-bottom: 10px;
         }
+
         .result.positive .result-verdict {
-            color: #e53935;         /* Red for HIGH */
-        }
-        .result.negative .result-verdict {
-            color: #2e7d32;         /* Green for LOW */
+            color: var(--color-danger);
         }
 
-        /* Step 2: Risk percentage badge */
+        .result.negative .result-verdict {
+            color: var(--color-success);
+        }
+
         .risk-score {
             display: inline-block;
-            font-size: 2em;
+            font-size: 2.2rem;
             font-weight: 900;
+            padding: 10px 24px;
             border-radius: 50px;
-            padding: 6px 22px;
-            margin: 8px 0 12px;
-            letter-spacing: 1px;
+            margin: 10px 0;
+            background: white;
         }
+
         .result.positive .risk-score {
-            background-color: #ffebee;
-            color: #c62828;         /* Deep red for HIGH risk score */
-            border: 2px solid #ef9a9a;
+            color: var(--color-danger);
         }
+
         .result.negative .risk-score {
-            background-color: #f1f8e9;
-            color: #33691e;         /* Deep green for LOW risk score */
-            border: 2px solid #aed581;
+            color: var(--color-success);
         }
 
-        /* Supporting message below the score */
-        .result-message {
-            font-size: 0.9em;
-            font-weight: 500;
-            color: #555;
-            margin-top: 4px;
-        }
-
-        /* Progress bar showing risk visually */
         .risk-bar-track {
-            background-color: #e0e0e0;
-            border-radius: 10px;
+            width: 100%;
             height: 10px;
-            margin: 12px 4px 4px;
+            background: #e2e8f0;
+            border-radius: 10px;
             overflow: hidden;
+            margin-top: 15px;
         }
+
         .risk-bar-fill {
             height: 100%;
+            width: 70%;
             border-radius: 10px;
-            transition: width 0.6s ease;
         }
+
         .result.positive .risk-bar-fill {
-            background: linear-gradient(90deg, #ef9a9a, #e53935);
+            background: linear-gradient(90deg, #f87171, #dc2626);
         }
+
         .result.negative .risk-bar-fill {
-            background: linear-gradient(90deg, #a5d6a7, #2e7d32);
+            background: linear-gradient(90deg, #4ade80, #16a34a);
+        }
+
+        .result-message {
+            margin-top: 14px;
+            font-size: 15px;
+            color: var(--color-text-dark);
+            font-weight: 500;
         }
 
         .disclaimer {
-            display: block; 
-            text-align: center; 
-            margin-top: 20px; 
-            color: #999;
-            font-size: 0.85em;
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            font-size: 13px;
+            color: var(--color-text-muted);
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 768px) {
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full-width {
+                grid-column: span 1;
+            }
+
+            .container {
+                padding: 22px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
         }
     </style>
 </head>
+
 <body>
+
     <div class="container">
+
         <h1>HEART DISEASE PREDICTION SYSTEM</h1>
-        <p>Enter the 13 clinical markers for analysis.</p>
-        
+        <p class="subtitle">
+            Enter the 13 clinical markers for AI-based risk analysis
+        </p>
+
+        <!-- RESULT -->
         {% if prediction_text %}
-            {% set result_class = 'positive' if 'HIGH' in prediction_text else 'negative' %}
-            {% set verdict_label = 'HIGH RISK' if 'HIGH' in prediction_text else 'LOW RISK' %}
+        {% set result_class = 'positive' if 'HIGH' in prediction_text else 'negative' %}
+        {% set verdict_label = 'HIGH RISK' if 'HIGH' in prediction_text else 'LOW RISK' %}
 
-            <div class="result {{ result_class }}">
+        <div class="result {{ result_class }}">
 
-                <!-- Step 1: HIGH / LOW heading -->
-                <div class="result-verdict">{{ verdict_label }}</div>
-
-                <!-- Step 2: Risk percentage badge -->
-                {% if probability is not none %}
-                    <div class="risk-score">{{ probability }}%</div>
-
-                    <!-- Visual progress bar -->
-                    <div class="risk-bar-track">
-                        <div class="risk-bar-fill"  ></div>
-                    </div>
-                {% endif %}
-
-                <!-- Supporting message from model -->
-                <div class="result-message">{{ prediction_text }}</div>
+            <div class="result-verdict">
+                {{ verdict_label }}
             </div>
+
+            {% if probability is not none %}
+
+            <div class="risk-score">
+                {{ probability }}%
+            </div>
+
+            <div class="risk-bar-track">
+                <div class="risk-bar-fill"></div>
+            </div>
+
+            {% endif %}
+
+            <div class="result-message">
+                {{ prediction_text }}
+            </div>
+
+        </div>
         {% endif %}
 
+        <!-- FORM -->
         <form method="POST" action="/">
-            <div class="input-group">
-                <label for="age">1. Age (years):</label>
-                <input type="number" id="age" name="age" required step="1" min="1" placeholder="e.g., 52">
+
+            <div class="form-grid">
+
+                <div class="input-group">
+                    <label>1. Age (years)</label>
+                    <input type="number" name="age" required placeholder="e.g. 52">
+                </div>
+
+                <div class="input-group">
+                    <label>2. Sex</label>
+                    <select name="sex" required>
+                        <option value="1">Male</option>
+                        <option value="0">Female</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>3. Chest Pain Type</label>
+                    <select name="cp" required>
+                        <option value="0">Typical Angina</option>
+                        <option value="1">Atypical Angina</option>
+                        <option value="2">Non-Anginal Pain</option>
+                        <option value="3">Asymptomatic</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>4. Resting Blood Pressure</label>
+                    <input type="number" name="trestbps" required placeholder="e.g. 125">
+                </div>
+
+                <div class="input-group">
+                    <label>5. Serum Cholesterol</label>
+                    <input type="number" name="chol" required placeholder="e.g. 212">
+                </div>
+
+                <div class="input-group">
+                    <label>6. Fasting Blood Sugar</label>
+                    <select name="fbs" required>
+                        <option value="1">True</option>
+                        <option value="0">False</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>7. Resting ECG</label>
+                    <select name="restecg" required>
+                        <option value="0">Normal</option>
+                        <option value="1">ST-T wave abnormality</option>
+                        <option value="2">Left ventricular hypertrophy</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>8. Maximum Heart Rate</label>
+                    <input type="number" name="thalach" required placeholder="e.g. 168">
+                </div>
+
+                <div class="input-group">
+                    <label>9. Exercise Induced Angina</label>
+                    <select name="exang" required>
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>10. ST Depression</label>
+                    <input type="number" step="0.1" name="oldpeak" required placeholder="e.g. 1.0">
+                </div>
+
+                <div class="input-group">
+                    <label>11. Slope</label>
+                    <select name="slope" required>
+                        <option value="0">Upsloping</option>
+                        <option value="1">Flat</option>
+                        <option value="2">Downsloping</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>12. Number of Major Vessels</label>
+                    <input type="number" name="ca" required placeholder="e.g. 2">
+                </div>
+
+                <div class="input-group full-width">
+                    <label>13. Thalassemia</label>
+                    <select name="thal" required>
+                        <option value="3">Normal</option>
+                        <option value="6">Fixed Defect</option>
+                        <option value="7">Reversible Defect</option>
+                    </select>
+                </div>
+
+                <!-- BUTTON -->
+                <div class="full-width">
+
+                    <button type="submit" class="submit-btn">
+                        GET PREDICTION
+                    </button>
+
+                    <small class="disclaimer">
+                        This AI tool is for informational purposes only.
+                        Please consult a medical professional for diagnosis.
+                    </small>
+
+                </div>
+
             </div>
 
-            <div class="input-group">
-                <label for="sex">2. Sex (1=Male, 0=Female):</label>
-                <select id="sex" name="sex" required>
-                    <option value="1">1 (Male)</option>
-                    <option value="0">0 (Female)</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label for="cp">3. Chest Pain Type (cp):</label>
-                <select id="cp" name="cp" required>
-                    <option value="0">0 (Typical Angina)</option>
-                    <option value="1">1 (Atypical Angina)</option>
-                    <option value="2">2 (Non-Anginal Pain)</option>
-                    <option value="3">3 (Asymptomatic)</option>
-                </select>
-            </div>
-            
-            <div class="input-group">
-                <label for="trestbps">4. Resting Blood Pressure (trestbps) in mm Hg:</label>
-                <input type="number" id="trestbps" name="trestbps" required step="0.1" min="80" placeholder="e.g., 125">
-            </div>
-
-            <div class="input-group">
-                <label for="chol">5. Serum Cholestoral (chol) in mg/dl:</label>
-                <input type="number" id="chol" name="chol" required step="0.1" min="100" placeholder="e.g., 212">
-            </div>
-
-            <div class="input-group">
-                <label for="fbs">6. Fasting Blood Sugar (fbs > 120 mg/dl):</label>
-                <select id="fbs" name="fbs" required>
-                    <option value="1">1 (True)</option>
-                    <option value="0">0 (False)</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label for="restecg">7. Resting Electrocardiographic Results (restecg):</label>
-                <select id="restecg" name="restecg" required>
-                    <option value="0">0 (Normal)</option>
-                    <option value="1">1 (ST-T wave abnormality)</option>
-                    <option value="2">2 (Left ventricular hypertrophy)</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label for="thalach">8. Maximum Heart Rate Achieved (thalach):</label>
-                <input type="number" id="thalach" name="thalach" required step="1" min="71" max="202" placeholder="e.g., 168">
-            </div>
-
-            <div class="input-group">
-                <label for="exang">9. Exercise Induced Angina (exang):</label>
-                <select id="exang" name="exang" required>
-                    <option value="1">1 (Yes)</option>
-                    <option value="0">0 (No)</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label for="oldpeak">10. ST Depression Induced by Exercise (oldpeak):</label>
-                <input type="number" id="oldpeak" name="oldpeak" required step="0.1" min="0" placeholder="e.g., 1.0">
-            </div>
-
-            <div class="input-group">
-                <label for="slope">11. Slope of the Peak Exercise ST Segment (slope):</label>
-                <select id="slope" name="slope" required>
-                    <option value="0">0 (Upsloping)</option>
-                    <option value="1">1 (Flat)</option>
-                    <option value="2">2 (Downsloping)</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label for="ca">12. Number of Major Vessels (ca, 0-3) colored by fluoroscopy:</label>
-                <input type="number" id="ca" name="ca" required step="1" min="0" max="3" placeholder="e.g., 2">
-            </div>
-
-            <div class="input-group">
-                <label for="thal">13. Thalassemia (thal):</label>
-                <select id="thal" name="thal" required>
-                    <option value="3">3 (Normal)</option>
-                    <option value="6">6 (Fixed Defect)</option>
-                    <option value="7">7 (Reversible Defect)</option>
-                </select>
-            </div>
-
-            <button type="submit" class="submit-btn">GET PREDICTION</button>
-            <small class="disclaimer">This tool is for informational purposes only. Always consult a medical professional for diagnosis.</small>
         </form>
+
     </div>
+
 </body>
+
 </html>

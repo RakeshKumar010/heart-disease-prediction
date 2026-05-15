@@ -2,7 +2,7 @@
 # ❤️ HEART DISEASE PREDICTION SYSTEM
 # =============================================================================
 # This project:
-# → Loads the heart disease dataset
+# → Loads the heart disease dataset (kaggle dataset)
 # → Trains Machine Learning models
 # → Compares model performance
 # → Saves the best model for future prediction
